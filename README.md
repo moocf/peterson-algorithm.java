@@ -22,6 +22,7 @@ for educational purposes only.
 
 > **Course**: [Concurrent Data Structures], Monsoon 2020<br>
 > **Taught by**: Prof. Govindarajulu Regeti
+<br>
 
 [Concurrent Data Structures]: https://github.com/iiithf/concurrent-data-structures
 
