@@ -29,6 +29,35 @@ process(i):
 5. I am done with CS.
 ```
 
+```bash
+## OUTPUT
+Starting 2 processes (threads) ...
+1: want CS
+0: want CS
+1: in CS0
+1: done CS
+1: want CS
+0: in CS0
+0: done CS
+0: want CS
+1: in CS1
+1: done CS
+1: want CS
+0: in CS1
+0: done CS
+0: want CS
+1: in CS2
+1: done CS
+1: want CS
+0: in CS2
+0: done CS
+0: want CS
+1: in CS3
+1: done CS
+0: in CS3
+0: done CS
+```
+
 See [Main.java] for code and [repl.it] for output.
 
 [Main.java]: https://repl.it/@wolfram77/peterson-algorithm#Main.java
