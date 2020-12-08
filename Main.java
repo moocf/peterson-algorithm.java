@@ -1,4 +1,10 @@
-import java.util.concurrent.*;
+// Peterson's algorithm is a concurrent programming
+// algorithm for mutual exclusion that allows two
+// processes to share a single-use resource without
+// conflict, using only shared memory for communication.
+// It was formulated by Gary L. Peterson in 1981.
+// The algorithm was later generalized for more than
+// two processes.
 
 // Two processes use a respective "flag" to
 // indicate that they want to enter a critical
@@ -12,63 +18,56 @@ import java.util.concurrent.*;
 // tie-breaker prevents deadlock.
 
 class Main {
-  static int[] flag;
-  static int turn;
+  static boolean[] flag = {false, false};
+  static int turn = 0;
+  static int N = 4;
+  // flag: ith process wants to enter CS?
+  // turn: whose turn to enter CS
+  // N: number of loops
 
-  // Process n:
-  // 1. I want to enter CS (flag[n]=1)
-  // 2. Its my turn to wait (turn=n)
-  // 3. I wait if you want too and my wait turn
-  // 4. I enter CS (sleep random)
-  // 5. I dont want to enter CS (flag[n]=0)
-  static void process(int n) {
-    String x = "process "+n+": ";
-    new Thread(() -> {
-      try {
-      while(true) {
-        flag[n] = true;
-        turn = n;
-        log(x+"waiting");
-        while(c2==1 && turn==1) Thread.sleep(10);
-        log(x+"enter critical section");
-        Thread.sleep((long)(Math.random()*1000));
-        log(x+"exits critical section");
-        c1 = 0;
+
+  // 1. I want to enter CS.
+  // 2. Its the other process' turn.
+  // 3. I wait if you want too and your turn.
+  // 4. I enter CS (sleep).
+  // 5. I am done with CS.
+  static Thread process(int i) {
+    return new Thread(() -> {
+      int j = 1 - i;
+      for (int n=0; n<N; n++) {
+        log(i+": want CS"); // LOCK
+        flag[i] = true; // 1
+        turn = j;       // 2
+        while (flag[j] && turn == j) Thread.yield(); // 3
+        
+        log(i+": in CS"+n);
+        sleep(1000 * Math.random()); // 4
+
+        log(i+": done CS"); // UNLOCK
+        flag[i] = false; // 5
       }
-      }
-      catch(InterruptedException e) {}
-    }).start();
+    });
   }
 
-  // Process 2:
-  // 1. I want to enter CS (c2=1)
-  // 2. Its my turn to wait (turn=2)
-  // 3. I wait if you want too and my wait turn
-  // 4. I enter CS (sleep random)
-  // 5. I dont want to enter CS (c2=0)
-  static void process2() {
-    new Thread(() -> {
-      try {
-      while(true) {
-        c2 = 1;
-        turn = 2;
-        log("2: waiting");
-        while(c1==1 && turn==2) Thread.sleep(10);
-        log("2: enter critical section");
-        Thread.sleep((long)(Math.random()*1000));
-        log("2: exits critical section");
-        c2 = 0;
-      }
-      }
-      catch(InterruptedException e) {}
-    }).start();
-  }
 
-  // 1. Both processes started
   public static void main(String[] args) {
-    process1();
-    process2();
+    try {
+    log("Starting 2 processes (threads) ...");
+    Thread p0 = process(0);
+    Thread p1 = process(1);
+    p0.start();
+    p1.start();
+    p0.join();
+    p1.join();
+    }
+    catch (InterruptedException e) {}
   }
+
+  static void sleep(double t) {
+    try { Thread.sleep((long)t); }
+    catch (InterruptedException e) {}
+  }
+
   static void log(String x) {
     System.out.println(x);
   }
