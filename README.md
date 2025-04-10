@@ -76,3 +76,4 @@ See [Main.java] for code and [repl.it] for output.
 - [Proof of a Mutual Exclusion Algorithm :: M. Hofri](https://docs.lib.purdue.edu/cgi/viewcontent.cgi?referer=https://www.google.com/&httpsredir=1&article=1778&context=cstech)
 
 ![](https://ga-beacon.deno.dev/G-G1E8HNDZYY:v51jklKGTLmC3LAZ4rJbIQ/github.com/javaf/peterson-algorithm)
+![](https://ga-beacon.deno.dev/G-G1E8HNDZYY:v51jklKGTLmC3LAZ4rJbIQ/github.com/moocf/peterson-algorithm.java)
